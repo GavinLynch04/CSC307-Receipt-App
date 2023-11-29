@@ -5,24 +5,30 @@ import AddUsers from './AddUsers'
 import LoginSignup from "./LoginSignup";
 import PopUp from './PopUp.js';
 import ImageUpload from './ImageUpload';
+import ImageCapture from './ImageCapture.js'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+
 let i = 0;
+
 
 function CreateTable() {
     const [buttonLabels, setButtonLabels] = useState(['User 1', 'User 2', 'User 3']);
     const [jsonData, setJsonData] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
     const handleLogin = () => {
         setIsLoggedIn(true);
     };
+
 
     const handleInputChange = (newLabel) => {
         const newButtonLabels = [...buttonLabels];
         newButtonLabels[i++] = newLabel;
         setButtonLabels(newButtonLabels);
     };
+
 
         useEffect(() => {
             fetchData()
@@ -33,6 +39,7 @@ function CreateTable() {
                 });
         }, []);
 
+
     const Upload = () => {
         return (
             <div>
@@ -41,6 +48,17 @@ function CreateTable() {
             </div>
         )
     }
+
+
+    const ICAP = () => {
+        return (
+            <div>
+                <Header/>
+                <ImageCapture />
+            </div>
+        )
+    }
+
 
     const HomePage = () => {
         return (
@@ -61,10 +79,12 @@ function CreateTable() {
         );
     };
 
+
     return (
         <Router>
             <Routes>
                 <Route path="/imageUpload" element={<Upload />} />
+                <Route path="/imageCapture" element={<ICAP />} />
                 <Route path="/history" />
                 <Route path="/" element={<HomePage />} />
             </Routes>
@@ -72,8 +92,10 @@ function CreateTable() {
     );
 }
 
+
 function fetchData() {
     return fetch("http://localhost:8000/receipt");
 }
+
 
 export default CreateTable;
