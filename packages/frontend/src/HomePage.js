@@ -1,7 +1,7 @@
 import Header from "./Header";
 import AddUsers from "./AddUsers";
 import Table from "./Table";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 const HomePage = () => {
     const [buttonLabels, setButtonLabels] = useState(['User 1', 'User 2', 'User 3']);
@@ -10,12 +10,7 @@ const HomePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [dataLoading, setDataLoading] = useState(true);
 
-
-    useEffect(() => {
-        fetchDataAndUpdateState();
-    }, [fetchDataAndUpdateState]);
-
-    const fetchDataAndUpdateState = async () => {
+    const fetchDataAndUpdateState = useCallback(async () => {
         try {
             const res = await fetchData();
 
@@ -33,7 +28,11 @@ const HomePage = () => {
             // Set dataLoading to false once data is fetched (success or error)
             setDataLoading(false);
         }
-    };
+    });
+
+    useEffect(() => {
+        fetchDataAndUpdateState();
+    }, [fetchDataAndUpdateState]);
 
     const handleInputChange = (newLabel) => {
         const updatedLabels = [...buttonLabels];
