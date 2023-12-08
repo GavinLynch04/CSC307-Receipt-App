@@ -10,6 +10,7 @@ const HomePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [dataLoading, setDataLoading] = useState(true);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchDataAndUpdateState = useCallback(async () => {
         try {
             const res = await fetchData();
