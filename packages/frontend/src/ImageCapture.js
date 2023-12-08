@@ -10,7 +10,6 @@ const ImageCapture = () => {
     const [isWebcamActive, setIsWebcamActive] = useState(false);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const [file, setFile] = useState(null);
 
 
 

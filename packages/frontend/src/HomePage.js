@@ -13,7 +13,7 @@ const HomePage = () => {
 
     useEffect(() => {
         fetchDataAndUpdateState();
-    }, []);
+    }, [ ]);
 
     const fetchDataAndUpdateState = async () => {
         try {

@@ -24,9 +24,7 @@ const Table = (props) => {
         // Selects every user for an item (sets them all to clicked = true)
         // If all users are already selected, unselects every user instead (clicked = false).
         const newButtonStates = [...buttonStates];
-        var setState = (newButtonStates[row].length == 
-                        newButtonStates[row].reduce((count,state) => count + (state.clicked ? 1 : 0),0)
-                        ? false : true)
+        var setState = (newButtonStates[row].length !== newButtonStates[row].reduce((count, state) => count + (state.clicked ? 1 : 0), 0))
         for(let x = 0; x < newButtonStates[row].length; x++){
             newButtonStates[row][x].clicked = setState;
         }
