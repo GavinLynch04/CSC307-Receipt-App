@@ -48,6 +48,7 @@ const PopupButton = (props) => {
                     },
                 }}
 
+                // Button to close the popup
             >
                 <div>
                     {popupData.map((item, index) => (

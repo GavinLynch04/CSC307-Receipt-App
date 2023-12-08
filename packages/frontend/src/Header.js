@@ -13,6 +13,7 @@ function Header() {
         );
     };
 
+    // Buttons for the navigation bar at the top of the screen
     return (
         <header>
             <h3>QuickSplit</h3>
