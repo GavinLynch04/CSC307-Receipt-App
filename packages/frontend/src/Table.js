@@ -69,7 +69,8 @@ const Table = (props) => {
     }
 
     const splitEvenly = () => {
-        // When a button is clicked this updates the clicked attribute in the 2d array
+        // When the split evenly button is clicked this updates the clicked attribute in the 2d array,
+        // setting all values to true (selected)
         const newButtonStates = props.jsonData.map(() =>
             buttonLabels.map(() => ({ clicked: true }))
         );
@@ -77,7 +78,8 @@ const Table = (props) => {
     };
 
     const clear = () => {
-        // When a button is clicked this updates the clicked attribute in the 2d array
+        // When the clear button is clicked this updates the clicked attribute in the 2d array and sets all
+        // values to false (not selected)
         const newButtonStates = props.jsonData.map(() =>
             buttonLabels.map(() => ({ clicked: false }))
         );

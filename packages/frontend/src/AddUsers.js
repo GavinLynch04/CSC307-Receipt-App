@@ -6,6 +6,7 @@ function InputField({ onInputChange }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // Data validation to ensure the field is not empty
         if (inputValue !== "") {
             onInputChange(inputValue);
             setInputValue('');
