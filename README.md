@@ -14,6 +14,7 @@ understanding and spliting by you. QuickSplit implements VeryFi API technology f
 6. Go to your web browser and navigate to localhost:3000 (if it doesn't automatically launch)
 7. That's it!
 
+# Code Guidlines
 
 ## Overview
 
