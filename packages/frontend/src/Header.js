@@ -7,6 +7,7 @@ function Header() {
 
     const navRef = useRef();
 
+    //Toggles the navbar
     const showNavbar = () => {
         navRef.current.classList.toggle(
             "responsive_nav"

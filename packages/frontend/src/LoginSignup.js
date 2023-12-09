@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import './CSS Files/LoginSignup.css'
 import { useNavigate} from "react-router-dom";
 
+//Handles the login click, and sends the info to the backend
 const LoginClick = async ({ email, password, setErrors, navigate }) => {
     try {
         const data = { email, password };
@@ -28,6 +29,7 @@ const LoginClick = async ({ email, password, setErrors, navigate }) => {
     }
 };
 
+//Handles the signup click, sends info to the backend for processing
 const SignUpClick = async ({username, email, password, setErrors, navigate}) => {
     try {
         const data = { username, password, email };
@@ -53,7 +55,7 @@ const SignUpClick = async ({username, email, password, setErrors, navigate}) => 
     }
 }
 
-
+//Login and signup component
 const LoginSignup = () => {
     const [action, setAction] = useState("Sign Up");
     const [username, setUsername] = useState('');
@@ -62,22 +64,27 @@ const LoginSignup = () => {
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
+    //Calls the login function
     const handleLoginClick = () => {
         LoginClick({ email, password, setErrors, navigate });
     };
 
+    //Calls the signup function
     const handleSignUpClick = () => {
         SignUpClick({username, email, password, setErrors, navigate})
     }
 
+    //Handles username change
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
 
+    //Handles password change
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
 
+    //Handles email change
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     }

@@ -2,17 +2,19 @@ import React, {useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS Files/ImageUpload.css';
 
+//Image upload component
 const ImageUpload = () => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false); // New loading state
     const fileInputRef = useRef(null);
-
     const navigate = useNavigate();
 
+    //Handles the uploaded file
     const handleFileChange = (e) => {
             setFile(e.target.files[0]);
         };
 
+    //Sends the file to the backend
     const handleFileUpload = async () => {
         const formData = new FormData();
         formData.append('file', file);
@@ -26,6 +28,7 @@ const ImageUpload = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
+            //If user accepts, will send the image to the api to be processed
             const userConfirmed = window.confirm('File uploaded successfully. Do you want to process this data?');
             if (userConfirmed) {
                 setLoading(true);
@@ -64,51 +67,52 @@ const ImageUpload = () => {
         console.log('File uploaded successfully');
     };
 
-        const handleDragOver = (e) => {
-            e.preventDefault();
-        };
+    //Handles the file drag over
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+    //Handles file drop
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const droppedFile = e.dataTransfer.files[0];
+        setFile(droppedFile);
+    };
 
-        const handleDrop = (e) => {
-            e.preventDefault();
+    //Opens file picker when the drop zone is clicked
+    const handleDropZoneClick = () => {
+        fileInputRef.current.click();
+    };
 
-            const droppedFile = e.dataTransfer.files[0];
-            setFile(droppedFile);
-        };
-
-        const handleDropZoneClick = () => {
-            fileInputRef.current.click();
-        };
-
-        return (
-            <div className="file-upload-container">
-                {loading && (
-                    <div className="loading-overlay">
-                        <div className="loading-spinner"></div>
-                        <p>Loading...</p>
-                    </div>
-                )}
-                <div
-                    className="drop-zone"
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onClick={handleDropZoneClick}
-                >
-                    <p>Drag & Drop a file here or click to select a file</p>
-                    <input
-                        type="file"
-                        onChange={handleFileChange}
-                        style={{display: 'none'}}
-                        ref={fileInputRef}
-                    />
+    return (
+        <div className="file-upload-container">
+            {loading && (
+                <div className="loading-overlay">
+                    <div className="loading-spinner"></div>
+                    <p>Loading...</p>
                 </div>
-                {file && (
-                    <div>
-                        <p>Selected File: {file.name}</p>
-                        <button className={'upload'} onClick={handleFileUpload}>Upload</button>
-                    </div>
-                )}
+            )}
+            <div
+                className="drop-zone"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={handleDropZoneClick}
+            >
+                <p>Drag & Drop a file here or click to select a file</p>
+                <input
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{display: 'none'}}
+                    ref={fileInputRef}
+                />
             </div>
-        );
+            {file && (
+                <div>
+                    <p>Selected File: {file.name}</p>
+                    <button className={'upload'} onClick={handleFileUpload}>Upload</button>
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default ImageUpload;

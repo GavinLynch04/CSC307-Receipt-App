@@ -4,6 +4,7 @@ import "./CSS Files/AddUsers.css"
 function InputField({ onInputChange }) {
     const [inputValue, setInputValue] = useState('');
 
+    //Handles the input value
     const handleSubmit = (e) => {
         e.preventDefault();
         // Data validation to ensure the field is not empty

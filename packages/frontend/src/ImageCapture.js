@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS Files/ImageCapture.css';
 
-
+//Image capture component
 const ImageCapture = () => {
     const navigate = useNavigate();
     const [image, setImage] = useState(null);
@@ -10,8 +10,6 @@ const ImageCapture = () => {
     const [isWebcamActive, setIsWebcamActive] = useState(false);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-
-
 
     const captureImage = () => {
         const context = canvasRef.current.getContext('2d');
@@ -23,7 +21,7 @@ const ImageCapture = () => {
         setIsWebcamActive(false);
     };
 
-
+    //Handles the backend request to upload the file
     const handleFileUpload = async () => {
         const fetchResponse = await fetch(image);
         const blob = await fetchResponse.blob();
@@ -82,7 +80,7 @@ const ImageCapture = () => {
     };
     ;
 
-
+    //Starts the screen to take a picture
     const startVideo = () => {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
@@ -95,7 +93,7 @@ const ImageCapture = () => {
             });
     };
 
-
+    //Restarts image screen
     const retakeImage = () => {
         setImage(null);
         startVideo();
