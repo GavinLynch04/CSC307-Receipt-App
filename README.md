@@ -1,5 +1,12 @@
 # CSC307-Receipt-App
 
+This project is designed to help split receipts among multiple different people, and make the task of divying up 
+receipts much easier. Includes the ability to upload or capture a picture of a receipt, where it will be processed for easier 
+understanding and spliting by you. QuickSplit implements VeryFi API technology for its OCR/Receipt processing.
+
+
+
+
 ## Overview
 
 For our project code style guidlines, we decided to follow the general Prettier guidlines, which are listed below.
@@ -9,7 +16,6 @@ For our project code style guidlines, we decided to follow the general Prettier 
 - **JavaScript/React**:
 
   - Indentation: 2 spaces.
-  - Single quotes for strings.
   - Semicolons at the end of statements.
   - Trailing commas where possible.
   - Line length: Prettier will automatically wrap code to the configured line length (default is 80 characters).
