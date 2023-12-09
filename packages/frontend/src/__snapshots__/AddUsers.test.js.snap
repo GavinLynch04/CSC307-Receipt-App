@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputField component renders correctly 1`] = `
+<form
+  className="userForm"
+  onSubmit={[Function]}
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <input
+    className="username"
+    onChange={[Function]}
+    placeholder="Input a name to update or add new buttons"
+    type="text"
+    value=""
+  />
+  <button
+    className="submitButton"
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+`;

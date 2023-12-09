@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PopupButton component renders correctly 1`] = `
+<div
+  className="modalContainer"
+>
+  <button
+    className="calculate"
+    onClick={[Function]}
+  >
+    Submit
+  </button>
+</div>
+`;

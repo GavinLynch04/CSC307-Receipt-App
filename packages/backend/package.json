@@ -23,5 +23,16 @@
     "mongoose": "^7.6.3",
     "node-stream-zip": "^1.15.0",
     "request-promise": "^4.2.6"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.5",
+    "@babel/preset-env": "^7.23.5",
+    "babel-jest": "^29.7.0",
+    "supertest": "^6.3.3"
   }
 }
