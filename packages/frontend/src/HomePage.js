@@ -10,6 +10,7 @@ const HomePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [dataLoading, setDataLoading] = useState(true);
 
+    //Function to fetch the data from the backend and update the table states
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchDataAndUpdateState = useCallback(async () => {
         try {
@@ -31,10 +32,12 @@ const HomePage = () => {
         }
     });
 
+    //Calls fetchDataAndUpdateState when homepage changes
     useEffect(() => {
         fetchDataAndUpdateState();
     }, [fetchDataAndUpdateState]);
 
+    //Handles the input from addUsers, updates table buttons
     const handleInputChange = (newLabel) => {
         const updatedLabels = [...buttonLabels];
 
@@ -47,6 +50,7 @@ const HomePage = () => {
         setCurrentIndex(currentIndex + 1);
     };
 
+    //Handles errors from backend to be displayed to the user
     const handleServerError = (error) => {
         console.log(error);
         if (error === 'Please upload an image first') {
@@ -79,6 +83,7 @@ const HomePage = () => {
     );
 };
 
+//Fetches receipt data from the backend
 function fetchData() {
     const token = localStorage.getItem('token');
     return fetch("http://localhost:8000/receipt", {

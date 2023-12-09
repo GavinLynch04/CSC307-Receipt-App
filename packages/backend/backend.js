@@ -20,9 +20,11 @@ app.use(express.json());
 
 dotenv.config();
 
+//Creates the filepath and user email global vars
 let relativeFilePath;
 let userEmail;
 
+//Connects to MongoDB Atlas server
 mongoose.set("debug", true);
 console.log(">>mongo cluster: " + process.env.MONGO_CLUSTER);
 mongoose
@@ -41,6 +43,7 @@ mongoose
     )
     .catch((error) => console.log(error));
 
+//Creates schema to save users and user info
 export const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -55,32 +58,24 @@ export const UserSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    files: [
-        {
-            filename: String,
-            contentType: String,
-            size: Number,
-            uploadDate: Date,
-        },
-    ],
 });
 
 const User = mongoose.model('User', UserSchema);
 
 const jwtSecret = process.env.JWT_SECRET;
-
+//Error checking for JWT Secret
 if (!jwtSecret) {
     console.error('JWT secret is not defined. Set the JWT_SECRET environment variable.');
     process.exit(1);
 }
 
+//Function to verify that the user has a valid web token
 const verifyToken = (req, res, next) => {
     const token = req.header('Authorization').split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized: No token provided' });
     }
-
     try {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
         next();
@@ -89,6 +84,7 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+//Endpoint to retrieve the JSON receipt data and return it to the frontend
 app.get("/receipt", verifyToken, async (req, res) => {
     if (!userEmail) {
         console.log("No email");
@@ -99,20 +95,22 @@ app.get("/receipt", verifyToken, async (req, res) => {
 
     try {
         await fsPromises.access(filePath, fsPromises.constants.F_OK);
-
         const data = await fsPromises.readFile(filePath, 'utf8');
         const jsonData = JSON.parse(data);
         res.json({ data: jsonData });
     } catch (err) {
+        //If no previous receipts processed send user an error
         if (err.code === 'ENOENT') {
             console.log("Please upload an image first");
             res.status(500).json({ error: 'Please upload an image first' });
         } else {
+            //General catch error
             res.status(500).json({ error: 'Error reading JSON file' });
         }
     }
 });
 
+//Initialize the storage var to store images
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/'); // Save files to the 'uploads/' directory
@@ -129,9 +127,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+//Endpoint to upload the images from imageUpload or imageCapture
 app.post('/upload', verifyToken, upload.single('file'), async (req, res) => {
     const file = req.file;
 
+    //Check a file is uploaded
     if (!file) {
         return res.status(400).json({error: 'No file provided'});
     }
@@ -144,17 +144,21 @@ app.post('/upload', verifyToken, upload.single('file'), async (req, res) => {
     res.status(200).json({ message: 'File uploaded successfully', file: fileDetails });
 });
 
+//Endpoint to register a new user
 app.post("/register", async (req, res) => {
     const { username, password, email } = req.body;
     try {
         const existingUser = await User.findOne({ email }).exec();
+        //If user already exists, send a error message to frontend
         if (existingUser) {
             return res.status(400).json({ error: "Email is already registered. Please Login" });
         } else {
+            //Encrypt password, then create the user and save it to MongoDB Atlas
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const user = new User({ username, password: hashedPassword, email });
             await user.save();
             userEmail = email;
+            //Create the JWT
             const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({ message: 'User registered successfully', token });
         }
@@ -164,9 +168,10 @@ app.post("/register", async (req, res) => {
     }
 });
 
+//Endpoint to verify login attempts
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-
+    //If user exists, then check the password matches. Otherwise return an error
     try {
         const existingUser = await User.findOne({ email }).exec();
 
@@ -176,6 +181,7 @@ app.post("/login", async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, existingUser.password);
 
         if (passwordMatch) {
+            //Sign the JWT for this session (exp in 1hr)
             const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
             userEmail = email;
             res.json({ message: "Login successful", token });
@@ -188,11 +194,8 @@ app.post("/login", async (req, res) => {
     }
 });
 const popupDataSchema = new mongoose.Schema({
-    // Define the schema based on the data structure of your popup
-    // Example:
     date: { type: Date, required: true },
     content: { type: String, required: true },
-    // Add other fields as necessary
 });
 
 const PopupData = mongoose.model('PopupData', popupDataSchema);
@@ -209,8 +212,9 @@ app.post('/savePopupData', verifyToken, async (req, res) => {
     }
 });
 
-
+//Endpoint to send the uploaded image to VeryFi API for receipt OCR processing
 app.get("/process", verifyToken, async (req, res) => {
+    //First part creates a ZIP file of the image to send to VeryFi
     const listFiles = [relativeFilePath];
     const zipFilePath = 'receipts.zip';
 
@@ -227,6 +231,7 @@ app.get("/process", verifyToken, async (req, res) => {
     }
 
     archive.finalize();
+    //Define the values needed to authenticate the request
     output.on('close', async () => {
 
         const requestOptions = {
@@ -249,6 +254,8 @@ app.get("/process", verifyToken, async (req, res) => {
             },
         };
 
+        //Send the request ot VeryFi, and save the response JSON as a
+        // file with the users email in it for access later
         try {
             const response = await request(requestOptions);
             const responseData = typeof response === 'string' ? JSON.parse(response) : response;
@@ -260,6 +267,7 @@ app.get("/process", verifyToken, async (req, res) => {
     });
 });
 
+//Endpoint to get the popup data
 app.get('/getPopupData', verifyToken, async (req, res) => {
     try {
         const popupData = await PopupData.find({}); // Fetch all documents from PopupData collection
@@ -270,7 +278,7 @@ app.get('/getPopupData', verifyToken, async (req, res) => {
     }
 });
 
-
+//Port listen definition
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

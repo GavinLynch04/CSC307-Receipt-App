@@ -28,11 +28,13 @@ function CreateTable() {
         )
     }
 
+    //Protects different routes
     const PrivateRoute = ({ element }) => {
         const token = localStorage.getItem('token');
         return token ? element : <Navigate to="/" />;
     };
 
+    //React Routes for different pages
     return (
         <Router>
             <Routes>
