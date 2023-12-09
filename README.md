@@ -4,6 +4,11 @@ This project is designed to help split receipts among multiple different people,
 receipts much easier. Includes the ability to upload or capture a picture of a receipt, where it will be processed for easier 
 understanding and spliting by you. QuickSplit implements VeryFi API technology for its OCR/Receipt processing.
 
+# Figma Prototype
+
+The Figma prototype can be found at:
+https://www.figma.com/file/LGjxKhAms390XG3L6u0YA9/Untitled?type=design&node-id=0-1&mode=design&t=mugc9tCxZ22m254Y-0
+
 # Development Environment Setup
 
 1. After cloning the project...
