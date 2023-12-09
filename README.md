@@ -4,7 +4,15 @@ This project is designed to help split receipts among multiple different people,
 receipts much easier. Includes the ability to upload or capture a picture of a receipt, where it will be processed for easier 
 understanding and spliting by you. QuickSplit implements VeryFi API technology for its OCR/Receipt processing.
 
+# Development Environment Setup
 
+1. After cloning the project...
+2. Navigate to CSC307-Receipt-App/packages/backend in the terminal
+3. Run npm start
+4. In a new terminal navigate to CSC307-Receipt-App/packages/frontend
+5. Run npm start
+6. Go to your web browser and navigate to localhost:3000 (if it doesn't automatically launch)
+7. That's it!
 
 
 ## Overview
