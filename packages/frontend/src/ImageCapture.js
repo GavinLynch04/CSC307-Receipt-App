@@ -78,7 +78,6 @@ const ImageCapture = () => {
             console.error('Error uploading file:', error);
         }
     };
-    ;
 
     //Starts the screen to take a picture
     const startVideo = () => {
